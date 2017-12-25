@@ -3,17 +3,20 @@
 import random,sys,time
 import requests
 from bs4 import BeautifulSoup
-num = input("Please input number of Players : ")
-num = int(num)
-members = ['Player'+str(i+1) for i in range(num)]
-# members.append('AI')
-random.shuffle(members)
-print(members,end="\n\n")
+
 memory=[]
-first_word = input("Please input the first word : ")
-memory.append(first_word)
-print("Let's start ...\n")
-time.sleep(4)
+name=input("Please me your name: ")
+
+def Ready_to_do_Shiritori():
+    members = []
+    members.append(name)
+    members.append('AI')
+    random.shuffle(members)
+    print(members,end="\n\n")
+    first_word = input("Please input the first word : ")
+    memory.append(first_word)
+    print("Let's start ...\n")
+    time.sleep(4)
 
 #入力された文字が辞書内にあるか判断。(weblio)
 def judge_exist_in_dictionary(input_word):
@@ -29,22 +32,26 @@ def judge_exist_in_dictionary(input_word):
 
 def main():
     while(True):
-        for i in range(num):
-            word = input("Turn of " + members[i] + " : ")
-            judge_exist_in_dictionary(word)
-            if word not in memory and (word[:1] == memory[-1][-1:]) and word.endswith('n') is False:
-                print("OK! Please change the next Player\n")
-            else:
-                if word in memory:
-                    print("{} is already out at the {}. You lose.\n".format(word,memory.index(word)))
-                if word[:1] is not memory[-1][-1:]:
-                    print("You must have put {} at Initial. You lose.\n".format(memory[-1][-1:]))
-                if word.endswith('n') is True:
-                    print("Not [n] at the end of the word. You lose.\n")
-                sys.exit()
-            memory.append(word)
-            # print(memory)
+        number=random.randint(0,1)
+        if number is 0:
+            word = input("Turn of " + name + " : ")
+        else:
+            word = input("Turn of AI : ")
+        judge_exist_in_dictionary(word)
+        if word not in memory and (word[:1] == memory[-1][-1:]) and word.endswith('n') is False:
+            print("OK! Please change the next Player\n")
+        else:
+            if word in memory:
+                print("{} is already out at the {}. You lose.\n".format(word,memory.index(word)))
+            if word[:1] is not memory[-1][-1:]:
+                print("You must have put [{}] at Initial. You lose.\n".format(memory[-1][-1:]))
+            if word.endswith('n') is True:
+                print("Not [n] at the end of the word. You lose.\n")
+            sys.exit()
+        memory.append(word)
+        # print(memory)
 if __name__ == '__main__':
+    Ready_to_do_Shiritori()
     main()
 
 #また、その単語の意味を日本語で説明する文章を表示。
