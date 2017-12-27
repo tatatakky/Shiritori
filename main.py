@@ -1,54 +1,79 @@
 # !/usr/bin/env python
 # -*- coding:utf-8 -*-
-import random,sys,time
+import random,sys,time,re
 import requests
 from bs4 import BeautifulSoup
 
+#出た単語の記憶装置
 memory=[]
+#名前の登録
+members=[]
 name=input("Please me your name: ")
 
+#しりとりの準備
 def Ready_to_do_Shiritori():
-    members = []
     members.append(name)
-    members.append('AI')
-    random.shuffle(members)
+    members.append('Chatbot')
     print(members,end="\n\n")
-    first_word = input("Please input the first word : ")
-    memory.append(first_word)
+    word = input("Please set your favorite word : ")
+    memory.append(word)
     print("Let's start ...\n")
     time.sleep(4)
 
 #入力された文字が辞書内にあるか判断。(weblio)
 def judge_exist_in_dictionary(input_word):
+    global number
     weblio_data = requests.get("http://ejje.weblio.jp/content/"+input_word)
     soup = BeautifulSoup(weblio_data.text,'html.parser')
     word_meanings = soup.findAll("td",class_ = 'content-explanation')
     length = len(word_meanings)
     if length is 0:
-        print("The word is not in dictionary. You lose.\n")
+        print("The word is not in dictionary. {} lose. Continued {} times\n".format(member[number%2],number))
         sys.exit()
     else:
         pass
 
-def main():
-    while(True):
-        number=random.randint(0,1)
-        if number is 0:
-            word = input("Turn of " + name + " : ")
+#ChatBotがwordを見つける。
+def ChatBot(initial_word):
+    Chatbot_dictionary = []
+    html = requests.get("http://learnersdictionary.com/3000-words/alpha/"+initial_word+"/"+str(random.randint(1,4)))
+    soup = BeautifulSoup(html.text,"html.parser")
+    string_include_tag_a_href = soup.findAll("a",href=re.compile("/definition/"))
+    for i in range(len(string_include_tag_a_href)):
+        string = string_include_tag_a_href[i].text.strip().replace(" ","")
+        if '(' in string:
+            moji = string[:string.index("(")]
         else:
-            word = input("Turn of AI : ")
+            moji = string
+        Chatbot_dictionary.append(moji)
+    return random.choice(Chatbot_dictionary)
+
+#メイン
+#ユーザー側の入力とChatBot側の入力
+#入力値が　既存、Initialが違う、最後がn　の場合負け。
+def main():
+    global number
+    number=0
+    while(True):
+        if number%2 is 0:
+            word = input("Turn of " + members[number%2] + " : ")
+        else:
+            print("Turn of Chatbot :",end=" ")
+            word = ChatBot(memory[-1][-1:])
+            print(word)
         judge_exist_in_dictionary(word)
         if word not in memory and (word[:1] == memory[-1][-1:]) and word.endswith('n') is False:
             print("OK! Please change the next Player\n")
         else:
             if word in memory:
-                print("{} is already out at the {}. You lose.\n".format(word,memory.index(word)))
+                print("{} is already out at the {}. {} lose. Continued {} times\n".format(word,memory.index(word),members[number%2],number))
             if word[:1] is not memory[-1][-1:]:
-                print("You must have put [{}] at Initial. You lose.\n".format(memory[-1][-1:]))
+                print("You must have put [{}] at Initial. {} lose. Continued {} times\n".format(memory[-1][-1:],members[number%2],number))
             if word.endswith('n') is True:
-                print("Not [n] at the end of the word. You lose.\n")
+                print("Not [n] at the end of the word. {} lose. Continued {} times\n".format(members[number%2],number))
             sys.exit()
         memory.append(word)
+        number+=1
         # print(memory)
 if __name__ == '__main__':
     Ready_to_do_Shiritori()
