@@ -8,7 +8,7 @@ from bs4 import BeautifulSoup
 memory=[]
 #名前の登録
 members=[]
-name=input("Please me your name: ")
+name=input("Please input your name: ")
 
 #しりとりの準備
 def Ready_to_do_Shiritori():
