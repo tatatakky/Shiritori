@@ -28,10 +28,12 @@ def judge_exist_in_dictionary(input_word):
     word_meanings = soup.findAll("td",class_ = 'content-explanation')
     length = len(word_meanings)
     if length is 0:
-        print("The word is not in dictionary. {} lose. Continued {} times\n".format(member[number%2],number))
+        print("The word is not in dictionary. {} lose. Continued {} times\n".format(members[number%2],number))
         sys.exit()
     else:
-        pass
+        print("意味 :",end=" ")
+        for i in range(length):
+            print(word_meanings[i].text)
 
 #ChatBotがwordを見つける。
 def ChatBot(initial_word):
