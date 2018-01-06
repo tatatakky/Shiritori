@@ -10,7 +10,6 @@ from linebot.models import (
     MessageEvent, TextMessage, TextSendMessage,
 )
 
-#英語しりとりのmain()部分をimport
 from test import *
 
 app = Flask(__name__)
@@ -40,7 +39,7 @@ def handle_message(event):
     line_bot_api.reply_message(
         event.reply_token,
         # TextSendMessage(text=event.message.text)
-        TextSendMessage(text=Hello(event.message.text))
+        TextSendMessage(text=Hello())
         )
 
 if __name__ == "__main__":
