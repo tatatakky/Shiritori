@@ -9,7 +9,6 @@ memory=[]
 #名前の登録
 members=[]
 name=input("Please input your name: ")
-
 #しりとりの準備
 def Ready_to_do_Shiritori():
     members.append(name)
@@ -18,7 +17,7 @@ def Ready_to_do_Shiritori():
     word = input("Please set your favorite word : ")
     memory.append(word)
     print("Let's start ...\n")
-    time.sleep(4)
+    time.sleep(3)
 
 #入力された文字が辞書内にあるか判断。(weblio)
 def judge_exist_in_dictionary(input_word):
@@ -59,6 +58,7 @@ def main():
     while(True):
         if number%2 is 0:
             word = input("Turn of " + members[number%2] + " : ")
+            t1 = time.time()
         else:
             print("Turn of Chatbot :",end=" ")
             word = ChatBot(memory[-1][-1:])
