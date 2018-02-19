@@ -14,8 +14,8 @@ from main_for_app import *
 
 app = Flask(__name__)
 
-line_bot_api = LineBotApi('oKhAwI/kG3dllrKoX6qJjFb3dddmzL1zNvmy1k5sbli14o0tPknWWUyVUnlih2jsXEcMXnzMcuhc2Km5GZePWGViDbdSwAUCiinAYTDIFtpAgBT1rLtlgeBKT9JE/WjMSFBpp1F3w3r7mwUubnrBKwdB04t89/1O/w1cDnyilFU=')
-handler = WebhookHandler('febb4b1de5bbee2b405895f60acc4bb4')
+line_bot_api = LineBotApi('***************')
+handler = WebhookHandler('***************')
 
 # @app.route("/")
 # def hello_world():
